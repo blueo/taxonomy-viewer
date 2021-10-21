@@ -78,6 +78,8 @@ var _registerComponents = __webpack_require__("./client/src/boot/registerCompone
 
 var _registerComponents2 = _interopRequireDefault(_registerComponents);
 
+__webpack_require__("./client/src/legacy/entwine/injectReact.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window.document.addEventListener('DOMContentLoaded', function () {
@@ -100,10 +102,16 @@ var _Injector = __webpack_require__(0);
 
 var _Injector2 = _interopRequireDefault(_Injector);
 
+var _TaxonomyViewer = __webpack_require__("./client/src/components/TaxonomyViewer.jsx");
+
+var _TaxonomyViewer2 = _interopRequireDefault(_TaxonomyViewer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function () {
-  _Injector2.default.component.registerMany({});
+  _Injector2.default.component.registerMany({
+    TaxonomyViewer: _TaxonomyViewer2.default
+  });
 };
 
 /***/ }),
@@ -118,10 +126,134 @@ __webpack_require__("./client/src/boot/index.js");
 
 /***/ }),
 
+/***/ "./client/src/components/TaxonomyViewer.jsx":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = TaxonomyViewer;
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function TaxonomyViewer() {
+  return _react2.default.createElement(
+    'div',
+    null,
+    'Viewer here'
+  );
+}
+
+/***/ }),
+
+/***/ "./client/src/legacy/entwine/injectReact.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _jquery = __webpack_require__(3);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(2);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _schemaFieldValues = __webpack_require__(4);
+
+var _Injector = __webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_jquery2.default.entwine('ss', function ($) {
+  var componentName = 'TaxonomyViewer';
+  $('.js-injector-boot #' + componentName).entwine({
+    Timer: null,
+    Component: null,
+    Root: null,
+
+    onmatch: function onmatch() {
+      this._super();
+
+      var context = { context: 'Blueo\\TaxonomyViewer' };
+
+      var Field = (0, _Injector.loadComponent)(componentName, context);
+      this.setComponent(Field);
+
+      var reactRoot = $(this)[0];
+      this.setRoot(reactRoot);
+
+      this.refresh();
+    },
+    onunmatch: function onunmatch() {
+      this._super();
+
+      var container = this.getRoot();
+      if (container) {
+        _reactDom2.default.unmountComponentAtNode(container);
+      }
+    },
+    refresh: function refresh() {
+      var props = this.getAttributes();
+
+      var Component = this.getComponent();
+
+      _reactDom2.default.render(_react2.default.createElement(Component, props), this.getRoot());
+    },
+    getAttributes: function getAttributes() {
+      var state = $(this).data('state');
+      var schema = $(this).data('schema');
+      return (0, _schemaFieldValues.schemaMerge)(schema, state);
+    }
+  });
+});
+
+/***/ }),
+
 /***/ 0:
 /***/ (function(module, exports) {
 
 module.exports = Injector;
+
+/***/ }),
+
+/***/ 1:
+/***/ (function(module, exports) {
+
+module.exports = React;
+
+/***/ }),
+
+/***/ 2:
+/***/ (function(module, exports) {
+
+module.exports = ReactDom;
+
+/***/ }),
+
+/***/ 3:
+/***/ (function(module, exports) {
+
+module.exports = jQuery;
+
+/***/ }),
+
+/***/ 4:
+/***/ (function(module, exports) {
+
+module.exports = schemaFieldValues;
 
 /***/ })
 

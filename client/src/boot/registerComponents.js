@@ -1,7 +1,8 @@
 import Injector from 'lib/Injector';
+import TaxonomyViewer from '../components/TaxonomyViewer';
 
 export default () => {
   Injector.component.registerMany({
-    // List your React components here so Injector is aware of them
+    TaxonomyViewer,
   });
 };
