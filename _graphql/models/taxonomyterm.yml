@@ -1,0 +1,6 @@
+SilverStripe\Taxonomy\TaxonomyTerm:
+  fields:
+    "*": true
+  operations:
+    read: true
+    readOne: true

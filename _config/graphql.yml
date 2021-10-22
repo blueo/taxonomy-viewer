@@ -1,0 +1,10 @@
+---
+Name: taxonomy-viewer-graphql
+Only:
+  classexists: 'SilverStripe\GraphQL\Schema\Schema'
+---
+SilverStripe\GraphQL\Schema\Schema:
+  schemas:
+    admin:
+      src:
+        taxonomyViewer: 'blueo/taxonomy-viewer: _graphql'

@@ -1,0 +1,14 @@
+section.sidebar {
+    
+    .term__list {
+        display: grid;
+        row-gap: 0.5rem;
+        list-style: none;
+    }
+
+    .term__item {
+        border: black 1px solid;
+        border-radius: 2px;
+        padding: 1rem;
+    }
+}

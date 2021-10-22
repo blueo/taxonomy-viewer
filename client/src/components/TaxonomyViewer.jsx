@@ -1,7 +1,11 @@
 import React from 'react';
+import SideBar from './SideBar';
 
 export default function TaxonomyViewer() {
     return (
-      <div>Viewer here</div>
+      <div>
+        <SideBar />
+        <section className="panel" />
+      </div>
     );
 }
