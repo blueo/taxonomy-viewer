@@ -3,9 +3,9 @@ import SideBar from './SideBar';
 
 export default function TaxonomyViewer() {
     return (
-      <div>
+      <React.Fragment>
         <SideBar />
-        <section className="panel" />
-      </div>
+        <section className="panel" >edit panel</section>
+      </React.Fragment>
     );
 }

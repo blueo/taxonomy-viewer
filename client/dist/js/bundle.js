@@ -144,16 +144,55 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _useLazyTaxonomyTerms3 = __webpack_require__("./client/src/hooks/useLazyTaxonomyTerms.js");
+var _useLazyTaxonomyTerms4 = __webpack_require__("./client/src/hooks/useLazyTaxonomyTerms.js");
 
-var _useLazyTaxonomyTerms4 = _interopRequireDefault(_useLazyTaxonomyTerms3);
+var _useLazyTaxonomyTerms5 = _interopRequireDefault(_useLazyTaxonomyTerms4);
+
+var _classnames = __webpack_require__(7);
+
+var _classnames2 = _interopRequireDefault(_classnames);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function Term(_ref) {
-    var id = _ref.id,
-        name = _ref.name,
-        childCount = _ref.childCount;
+var EditButtton = function EditButtton(_ref) {
+    var onClick = _ref.onClick;
+    return _react2.default.createElement(
+        'button',
+        { className: 'btn btn-success', onClick: onClick },
+        'Edit'
+    );
+};
+
+var ChildItems = function ChildItems(_ref2) {
+    var expanded = _ref2.expanded,
+        loading = _ref2.loading,
+        terms = _ref2.terms;
+
+    if (!expanded) {
+        return null;
+    }
+
+    var content = void 0;
+
+    if (loading) {
+        content = 'loading...';
+    } else {
+        content = terms.map(function (term) {
+            return _react2.default.createElement(Term, term);
+        });
+    }
+
+    return _react2.default.createElement(
+        'ul',
+        { className: 'term__list' },
+        content
+    );
+};
+
+function Term(_ref3) {
+    var id = _ref3.id,
+        name = _ref3.name,
+        childCount = _ref3.childCount;
 
     var _useState = (0, _react.useState)(false),
         _useState2 = _slicedToArray(_useState, 2),
@@ -162,10 +201,12 @@ function Term(_ref) {
 
     var filter = { parentID: { eq: id } };
 
-    var _useLazyTaxonomyTerms = (0, _useLazyTaxonomyTerms4.default)(filter),
+    var _useLazyTaxonomyTerms = (0, _useLazyTaxonomyTerms5.default)(filter),
         _useLazyTaxonomyTerms2 = _slicedToArray(_useLazyTaxonomyTerms, 2),
         getTerms = _useLazyTaxonomyTerms2[0],
-        terms = _useLazyTaxonomyTerms2[1].terms;
+        _useLazyTaxonomyTerms3 = _useLazyTaxonomyTerms2[1],
+        terms = _useLazyTaxonomyTerms3.terms,
+        loading = _useLazyTaxonomyTerms3.loading;
 
     var onClick = (0, _react.useCallback)(function () {
         setExpanded(!expanded);
@@ -177,11 +218,17 @@ function Term(_ref) {
         getTerms();
     }, [expanded]);
 
-    var button = null;
+    var toggleChildren = null;
     if (childCount > 0) {
-        button = _react2.default.createElement(
+        var classes = (0, _classnames2.default)({
+            'btn-info': !expanded,
+            'btn-dark': expanded,
+            btn: true
+        });
+
+        toggleChildren = _react2.default.createElement(
             'button',
-            { onClick: onClick },
+            { className: classes, onClick: onClick },
             expanded ? 'close' : 'open'
         );
     }
@@ -189,21 +236,21 @@ function Term(_ref) {
         'li',
         { className: 'term__item' },
         _react2.default.createElement(
-            'h3',
-            null,
-            name
+            'div',
+            { className: 'item__container' },
+            _react2.default.createElement(
+                'h3',
+                null,
+                name
+            ),
+            ' children: ',
+            childCount,
+            ' ',
+            toggleChildren,
+            ' ',
+            _react2.default.createElement(EditButtton, null)
         ),
-        ' children: ',
-        childCount,
-        ' ',
-        button,
-        expanded && _react2.default.createElement(
-            'ul',
-            { className: 'term__list' },
-            terms.map(function (term) {
-                return _react2.default.createElement(Term, term);
-            })
-        )
+        _react2.default.createElement(ChildItems, { expanded: expanded, loading: loading, terms: terms })
     );
 }
 
@@ -288,10 +335,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function TaxonomyViewer() {
   return _react2.default.createElement(
-    'div',
+    _react2.default.Fragment,
     null,
     _react2.default.createElement(_SideBar2.default, null),
-    _react2.default.createElement('section', { className: 'panel' })
+    _react2.default.createElement(
+      'section',
+      { className: 'panel' },
+      'edit panel'
+    )
   );
 }
 
@@ -311,7 +362,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 exports.default = useLazyQuery;
 
-var _reactApollo = __webpack_require__(3);
+var _reactApollo = __webpack_require__(2);
 
 var _react = __webpack_require__(0);
 
@@ -417,7 +468,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 exports.default = useQuery;
 
-var _reactApollo = __webpack_require__(3);
+var _reactApollo = __webpack_require__(2);
 
 var _react = __webpack_require__(0);
 
@@ -475,7 +526,7 @@ var _templateObject = _taggedTemplateLiteral(['\nquery getTaxonomyTerms($filter:
 
 exports.default = useTaxonomyTerms;
 
-var _graphqlTag = __webpack_require__(2);
+var _graphqlTag = __webpack_require__(3);
 
 var _graphqlTag2 = _interopRequireDefault(_graphqlTag);
 
@@ -599,14 +650,14 @@ module.exports = Injector;
 /***/ 2:
 /***/ (function(module, exports) {
 
-module.exports = GraphQLTag;
+module.exports = ReactApollo;
 
 /***/ }),
 
 /***/ 3:
 /***/ (function(module, exports) {
 
-module.exports = ReactApollo;
+module.exports = GraphQLTag;
 
 /***/ }),
 
@@ -628,6 +679,13 @@ module.exports = jQuery;
 /***/ (function(module, exports) {
 
 module.exports = schemaFieldValues;
+
+/***/ }),
+
+/***/ 7:
+/***/ (function(module, exports) {
+
+module.exports = classnames;
 
 /***/ })
 

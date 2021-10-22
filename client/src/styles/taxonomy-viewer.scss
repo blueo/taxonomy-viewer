@@ -1,14 +1,47 @@
+#TaxonomyViewer {
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    width: 100%;
+}
+
 section.sidebar {
+    --border-color: black;
+    --item-bg-color: white;
+    --shadow-color: grey;
+
+    overflow: auto;
     
     .term__list {
         display: grid;
-        row-gap: 0.5rem;
         list-style: none;
     }
 
+    > .term__list > .term__item:nth-child(even) {
+        background-color: var(--shadow-color);
+    }
+
     .term__item {
-        border: black 1px solid;
+        // border: var(--border-color) 1px dashed;
         border-radius: 2px;
-        padding: 1rem;
+        margin: 0.5rem;
+    }
+
+    .item__container {
+        display: flex;
+        align-items: center;
+        border: var(--border-color) 1px solid;
+        padding: 0.5rem;
+        background: var(--item-bg-color);
+        border-radius: 5px;
+        box-shadow: var(--shadow-color) 1px 1px 5px;
+        width: fit-content;
+
+        > * {
+            margin: 0.5rem;
+        }
+
+        h3 {
+            font-weight: bold;
+        }
     }
 }

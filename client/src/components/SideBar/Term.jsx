@@ -1,10 +1,35 @@
 import React, { useCallback, useState } from 'react';
 import useLazyTaxonomyTerms from '../../hooks/useLazyTaxonomyTerms';
+import classNames from 'classnames';
+
+const EditButtton = ({ onClick }) => (
+  <button className="btn btn-success" onClick={onClick}>Edit</button>
+    );
+
+const ChildItems = ({ expanded, loading, terms }) => {
+    if (!expanded) {
+        return null;
+    }
+
+    let content;
+
+    if (loading) {
+        content = 'loading...';
+    } else {
+        content = terms.map(term => (<Term {...term} />));
+    }
+
+    return (
+      <ul className="term__list">
+        {content}
+      </ul>
+    );
+};
 
 export default function Term({ id, name, childCount }) {
     const [expanded, setExpanded] = useState(false);
     const filter = { parentID: { eq: id } };
-    const [getTerms, { terms }] = useLazyTaxonomyTerms(filter);
+    const [getTerms, { terms, loading }] = useLazyTaxonomyTerms(filter);
 
     const onClick = useCallback(() => {
         setExpanded(!expanded);
@@ -17,12 +42,22 @@ export default function Term({ id, name, childCount }) {
         getTerms();
     }, [expanded]);
 
-    let button = null;
+    let toggleChildren = null;
     if (childCount > 0) {
-        button = (<button onClick={onClick}>{expanded ? 'close' : 'open'}</button>);
+        const classes = classNames({
+            'btn-info': !expanded,
+            'btn-dark': expanded,
+            btn: true
+        });
+
+        toggleChildren = (<button className={classes} onClick={onClick}>{expanded ? 'close' : 'open'}</button>);
     }
-    return (<li className="term__item">
-      <h3>{name}</h3> children: {childCount} {button}
-      {expanded && (<ul className="term__list">{terms.map((term) => (<Term {...term} />))}</ul>)}
-    </li>);
+    return (
+      <li className="term__item">
+        <div className="item__container">
+          <h3>{name}</h3> children: {childCount} {toggleChildren} <EditButtton />
+        </div>
+        <ChildItems expanded={expanded} loading={loading} terms={terms} />
+      </li>
+    );
 }
